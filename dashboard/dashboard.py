@@ -7,11 +7,11 @@ import seaborn as sns
 def input_data():
     try:
         #Input Data Day
-        data_day = pd.read_csv("e:/ITS/Coding Camp/Belajar/8. Modul Belajar Analisis Data dengan Python/Proyek-Analisis-Data/data/day.csv")
+        data_day = pd.read_csv("data/day.csv")
         data_day["dteday"] = pd.to_datetime(data_day["dteday"])
 
         #Input Data Hour
-        data_hour = pd.read_csv("e:/ITS/Coding Camp/Belajar/8. Modul Belajar Analisis Data dengan Python/Proyek-Analisis-Data/data/hour.csv")
+        data_hour = pd.read_csv("data/hour.csv")
         data_hour["dteday"] = pd.to_datetime(data_hour["dteday"])
 
         # Mapping kategori `season` dan `weathersit`
