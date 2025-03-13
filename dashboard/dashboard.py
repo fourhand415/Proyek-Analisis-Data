@@ -7,11 +7,11 @@ import seaborn as sns
 def input_data():
     try:
         #Input Data Day
-        data_day = pd.read_csv("data/day.csv")
+        data_day = pd.read_csv("e:/ITS/Coding Camp/Belajar/8. Modul Belajar Analisis Data dengan Python/Proyek-Analisis-Data/data/day.csv")
         data_day["dteday"] = pd.to_datetime(data_day["dteday"])
 
         #Input Data Hour
-        data_hour = pd.read_csv("data/hour.csv")
+        data_hour = pd.read_csv("e:/ITS/Coding Camp/Belajar/8. Modul Belajar Analisis Data dengan Python/Proyek-Analisis-Data/data/hour.csv")
         data_hour["dteday"] = pd.to_datetime(data_hour["dteday"])
 
         # Mapping kategori `season` dan `weathersit`
@@ -60,26 +60,26 @@ with col3:
     st.metric("Total Penyewaan Sepeda", f"{filter_data['cnt'].sum():,}")
 
 # Visualisasi
-st.subheader(f"Anda Memilih {pilih_musim}, Pilih Visualisasi Dibawah")
+st.subheader(f"Anda Memilih Musim {pilih_musim}, Pilih Visualisasi Dibawah")
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Rata - Rata Penyewaan", "Total Penyewaan", "Rata - Rata per Jam", "Total per Jam", "Workingday", "Jam dan Hari"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Rata - Rata Berdasarkan Musim", "Rata - Rata Berdasarkan Cuaca", "Rata - Rata per Jam", "Total per Jam", "Workingday", "Jam dan Hari"])
 
 with tab1:
-    st.subheader(f"Rata - Rata Penyewaan Sepeda di Musim {pilih_musim}")
+    st.subheader(f"Rata - Rata Penyewaan Sepeda Berdasarkan Musim")
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.barplot(data=filter_data, x="weathersit", y="cnt", estimator="mean", ci=None, ax=ax, color="blue")
-    ax.set_xlabel("Kondisi Cuaca")
+    sns.barplot(data=filter_data, x="season", y="cnt", ci=None, ax=ax, color="blue")
+    ax.set_xlabel("Musim")
     ax.set_ylabel("Rata - Rata Penyewaan Sepeda")
     ax.set_title(f"Rata - Rata Penyewaan Sepeda di Musim {pilih_musim}")
     st.pyplot(fig)
 
 with tab2:
-    st.subheader(f"Total Penyewaan Sepeda di Musim {pilih_musim}")
+    st.subheader(f"Rata - Rata Penyewaan Sepeda Berdasarkan Cuaca")
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.barplot(data=filter_data, x="weathersit", y="cnt", estimator=sum, ci=None, ax=ax, color="green")
+    sns.barplot(data=filter_data, x="weathersit", y="cnt", ci=None, ax=ax, color="green")
     ax.set_xlabel("Kondisi Cuaca")
-    ax.set_ylabel("Total Penyewaan Sepeda")
-    ax.set_title(f"Total Penyewaan Sepeda di Musim {pilih_musim}")
+    ax.set_ylabel("Rata - Rata Penyewaan Sepeda")
+    ax.set_title(f"Rata - Rata Penyewaan Sepeda Berdasarkan Cuaca")
     st.pyplot(fig)
 
 with tab3:
@@ -104,12 +104,13 @@ with tab4:
     st.pyplot(fig)
 
 with tab5:
-    st.subheader(f"Total Penyewaan Sepeda di Musim {pilih_musim} Berdasarkan Working Day")
+    st.subheader(f"Tren Penyewaan Sepeda di Musim {pilih_musim} Berdasarkan Working Day")
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.barplot(data=filter_data, x="workingday", y="cnt", estimator=sum, ci=None, ax=ax, color="blue")
-    ax.set_xlabel("Working Day")
+    sns.lineplot(x = 'dteday', y = "cnt", data = filter_data, hue = 'workingday', palette = "Set1")
+    ax.set_xlabel("Date")
     ax.set_ylabel("Total Penyewaan Sepeda")
-    ax.set_title(f"Total Penyewaan Sepeda di Musim {pilih_musim}")
+    plt.xticks(rotation = 60)
+    ax.set_title(f"Tren Penyewaan Sepeda Berdasarkan Workingday (Hari Kerja (1), Libur (0) )")
     st.pyplot(fig)
 
 with tab6:
